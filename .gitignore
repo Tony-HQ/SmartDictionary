@@ -2,6 +2,3 @@ packages/
 SmartDictionary/bin/
 SmartDictionary/obj/
 SmartDictionary/lib/
-SmartDictionary/lib/win32/sqlite3.def
-SmartDictionary/lib/win32/sqlite3.dll
-SmartDictionary/lib/win64/sqlite3.def
