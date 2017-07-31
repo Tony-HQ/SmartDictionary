@@ -1,22 +1,20 @@
-﻿using SmartDictionary.Entity;
+﻿// Copyright © Qiang Huang, All rights reserved.
+
 using System.Collections.Generic;
+using SmartDictionary.Entity;
 
 namespace SmartDictionary.DataAccess.Persistence
 {
     public static class SentenceCommandHelper
     {
-        public static string CreateSentenceTable =
-                @"DROP TABLE sentence IF EXISTS;
-                CREATE TABLE sentence 
-                (id INTEGER PRIMARY KEY AUTOINCREMENT,
-                key TEXT,
-                createdtime TEXT,
-                lastusedtime TEXT)";
-
-        public static string SaveCommand(Sentence sentence)
+        public static string DeleteByIdCommand(string id)
         {
-            return "INSERT INTO sentence (key,createdtime,lastusedtime) values" +
-                $"({sentence.Key},{sentence.CreatedTime},{sentence.LastUsedTime}";
+            return $"DLETE FROM sentence WHERE id = {id}";
+        }
+
+        public static string DeleteByKeyCommand(string key)
+        {
+            return $"DLETE FROM sentence WHERE key = {key}";
         }
 
         public static string GetByKeyCommand(string id)
@@ -30,14 +28,18 @@ namespace SmartDictionary.DataAccess.Persistence
             return $"SELECT FROM sentence WHERE key in ({scope}) ORDER BY lastusedtime DESC";
         }
 
-        public static string DeleteByKeyCommand(string key)
+        public static string SaveCommand(Sentence sentence)
         {
-            return $"DLETE FROM sentence WHERE key = {key}";
+            return "INSERT INTO sentence (key,createdtime,lastusedtime) values" +
+                   $"({sentence.Key},{sentence.CreatedTime},{sentence.LastUsedTime}";
         }
 
-        public static string DeleteByIdCommand(string id)
-        {
-            return $"DLETE FROM sentence WHERE id = {id}";
-        }
+        public static string CreateSentenceTable =
+            @"DROP TABLE sentence IF EXISTS;
+                CREATE TABLE sentence 
+                (id INTEGER PRIMARY KEY AUTOINCREMENT,
+                key TEXT,
+                createdtime TEXT,
+                lastusedtime TEXT)";
     }
 }

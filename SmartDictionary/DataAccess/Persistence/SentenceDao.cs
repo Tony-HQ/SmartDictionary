@@ -1,27 +1,40 @@
-﻿using SmartDictionary.Entity;
-using SQLite;
+﻿// Copyright © Qiang Huang, All rights reserved.
+
+using System;
 using System.Threading.Tasks;
+using SmartDictionary.Entity;
+using SQLite;
 
 namespace SmartDictionary.DataAccess.Persistence
 {
-    public sealed class SentenceDao
+    public static class SentenceDao
     {
-        public SentenceDao()
+        public static Task<int> DeleteAsync(long id)
         {
-            _connection = DataSource.GetConnection();
+            return DataSource.GetConnection().DeleteAsync(new Sentence
+            {
+                Id = id
+            });
         }
 
-        public async Task<int> SaveAsync(Sentence sentence)
+        public static Task<Sentence> GetByKeyAsync(string key)
         {
-            return await _connection.InsertAsync(sentence).ConfigureAwait(false);
+            var query = DataSource.GetConnection().Table<Sentence>().Where(sentence => sentence.Key.Equals(key));
+            return query.FirstAsync();
         }
 
-        public async Task<Sentence> GetByKeyAsync(string key)
+        public static Task<int> SaveAsync(Sentence sentence)
         {
-            var query = _connection.Table<Sentence>().Where(sentence => sentence.Key.Equals(key));
-            return await query.FirstAsync().ConfigureAwait(false);
+            return DataSource.GetConnection().InsertAsync(sentence);
         }
 
-        private readonly SQLiteAsyncConnection _connection;
+        public static Task<int> UpdateLastUsedTimeAsync(long id)
+        {
+            return DataSource.GetConnection().UpdateAsync(new Sentence
+            {
+                Id = id,
+                LastUsedTime = DateTime.Now
+            });
+        }
     }
 }

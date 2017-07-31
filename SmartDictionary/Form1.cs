@@ -1,13 +1,5 @@
-﻿using SmartDictionary.DataAccess.Persistence;
-using SmartDictionary.Entity;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// Copyright © Qiang Huang, All rights reserved.
+
 using System.Windows.Forms;
 
 namespace SmartDictionary

@@ -1,32 +1,35 @@
-﻿using SQLite;
+﻿// Copyright © Qiang Huang, All rights reserved.
+
 using System;
+using SQLite;
 
 namespace SmartDictionary.Entity
 {
     /// <summary>
-    /// All string will be saved in this model.
+    ///     All string will be saved in this model.
     /// </summary>
     public class Sentence
     {
         /// <summary>
-        /// Id of sentence.
+        ///     Created time.
         /// </summary>
-        [PrimaryKey, AutoIncrement]
+        public DateTime CreatedTime { get; set; }
+
+        /// <summary>
+        ///     Id of sentence.
+        /// </summary>
+        [PrimaryKey]
+        [AutoIncrement]
         public long Id { get; set; }
 
         /// <summary>
-        /// The sentence that want to save.
+        ///     The sentence that want to save.
         /// </summary>
         [Unique]
         public string Key { get; set; }
 
         /// <summary>
-        /// Created time.
-        /// </summary>
-        public DateTime CreatedTime { get; set; }
-
-        /// <summary>
-        /// Last used time.
+        ///     Last used time.
         /// </summary>
         public DateTime LastUsedTime { get; set; }
     }
