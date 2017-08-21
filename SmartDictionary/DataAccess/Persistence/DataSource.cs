@@ -1,8 +1,7 @@
 ﻿// Copyright © Qiang Huang, All rights reserved.
 
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
+using SmartDictionary.Common;
 using SmartDictionary.Entity;
 using SQLite;
 
@@ -19,6 +18,25 @@ namespace SmartDictionary.DataAccess.Persistence
             await conn.DropTableAsync<Sentence>().ConfigureAwait(false);
         }
 
+        public static async Task DropAllTables()
+        {
+            var tasks = new[]
+            {
+                GetConnection().DropTableAsync<Sentence>(),
+                GetConnection().DropTableAsync<OneTwoMapping>(),
+                GetConnection().DropTableAsync<ThreeMapping>(),
+                GetConnection().DropTableAsync<FourMapping>(),
+                GetConnection().DropTableAsync<FiveMapping>(),
+                GetConnection().DropTableAsync<SixMapping>(),
+                GetConnection().DropTableAsync<SevenMapping>(),
+                GetConnection().DropTableAsync<EightMapping>(),
+                GetConnection().DropTableAsync<NineMapping>(),
+                GetConnection().DropTableAsync<TenMapping>(),
+                GetConnection().DropTableAsync<MoreThanTenMapping>()
+            };
+            await Task.WhenAll(tasks);
+        }
+
         public static SQLiteAsyncConnection GetConnection()
         {
             return new SQLiteAsyncConnection(Path);
@@ -26,7 +44,8 @@ namespace SmartDictionary.DataAccess.Persistence
 
         public static async Task Init()
         {
-            var tasks = new[] {
+            var tasks = new[]
+            {
                 GetConnection().CreateTableAsync<Sentence>(),
                 GetConnection().CreateTableAsync<OneTwoMapping>(),
                 GetConnection().CreateTableAsync<ThreeMapping>(),
@@ -41,7 +60,7 @@ namespace SmartDictionary.DataAccess.Persistence
             };
             await Task.WhenAll(tasks);
         }
-        
-        private static readonly string Path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "smartdict.sqlite");
+
+        private static readonly string Path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), Configuration.DatabaseName());
     }
 }

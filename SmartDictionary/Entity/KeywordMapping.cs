@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// Copyright © Qiang Huang, All rights reserved.
 
 namespace SmartDictionary.Entity
 {
     /// <summary>
     /// Keyword mapping table based on length of keyword.
     /// </summary>
+    public sealed class CommonMapping : KeywordMappingBase
+    {
+    }
+
     public sealed class OneTwoMapping : KeywordMappingBase
     {
     }
@@ -21,14 +21,12 @@ namespace SmartDictionary.Entity
     {
     }
 
-
     public sealed class FiveMapping : KeywordMappingBase
     {
     }
 
     public sealed class SixMapping : KeywordMappingBase
     {
-
     }
 
     public sealed class SevenMapping : KeywordMappingBase

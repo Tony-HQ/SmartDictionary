@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SmartDictionary.Entity;
+using SmartDictionary.Interface;
 
 namespace SmartDictionary.DataAccess.Persistence
 {
-    public static class KeywordMappingDao<T> where T : KeywordMappingBase, new()
+    public abstract class KeywordMappingDao<T> : IKeywordMappingDao where T : KeywordMappingBase, new()
     {
-        public static Task<int> DeleteById(long id)
+        public Task<int> DeleteById(long id)
         {
             return DataSource.GetConnection().DeleteAsync(new T
             {
@@ -17,21 +18,22 @@ namespace SmartDictionary.DataAccess.Persistence
             });
         }
 
-        public static Task<int> SaveAsync(T keywordMapping)
+        public Task<int> SaveAsync(KeywordMappingBase keywordMapping)
         {
             return DataSource.GetConnection().InsertAsync(keywordMapping);
         }
 
-        public static Task<int> SaveMultipleAsync(IEnumerable<T> keywordMappings)
+        public Task<int> SaveMultipleAsync(IEnumerable<KeywordMappingBase> keywordMappings)
         {
             return DataSource.GetConnection().InsertAllAsync(keywordMappings);
         }
 
-        public static Task<List<T>> SearchByKeywordsAsync(IEnumerable<string> keywords)
+        public async Task<IEnumerable<CommonMapping>> SearchByKeywordsAsync(IEnumerable<string> keywords)
         {
-            return DataSource.GetConnection().Table<T>()
+            var result = await DataSource.GetConnection().Table<T>()
                 .Where(_ => keywords.Contains(_.Key))
                 .ToListAsync();
+            return result.Select(i => new CommonMapping {Id = i.Id, Key = i.Key});
         }
     }
 }

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// Copyright © Qiang Huang, All rights reserved.
+
 using SQLite;
 
 namespace SmartDictionary.Entity
@@ -12,6 +9,11 @@ namespace SmartDictionary.Entity
     /// </summary>
     public abstract class KeywordMappingBase
     {
+        /// <summary>
+        /// Number of words existed in sentence.
+        /// </summary>
+        public int Count { get; set; }
+
         /// <summary>
         /// Sentence id.
         /// </summary>

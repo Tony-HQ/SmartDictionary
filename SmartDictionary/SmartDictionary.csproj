@@ -60,6 +60,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Threading.Tasks.Dataflow, Version=4.5.24.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Tpl.Dataflow.4.5.24\lib\portable-net45+win8+wpa81\System.Threading.Tasks.Dataflow.dll</HintPath>
@@ -75,9 +76,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\Configuration.cs" />
+    <Compile Include="Common\Helper.cs" />
+    <Compile Include="Core\ParticipleProcessor.cs" />
+    <Compile Include="DataAccess\Persistence\CommonKeywordMappingDao.cs" />
     <Compile Include="DataAccess\Persistence\DataSource.cs" />
+    <Compile Include="DataAccess\Persistence\KeywordMappingDaoFactory.cs" />
+    <Compile Include="DataAccess\Persistence\KeywordMappingDaoBase.cs" />
     <Compile Include="DataAccess\Persistence\SentenceCommandHelper.cs" />
     <Compile Include="DataAccess\Persistence\SentenceDao.cs" />
+    <Compile Include="Entity\KeywordMapping.cs" />
+    <Compile Include="Entity\KeywordMappingBase.cs" />
     <Compile Include="Entity\Sentence.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -85,6 +94,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Interface\IKeywordMappingDao.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -95,6 +105,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -113,8 +124,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Common\" />
-    <Folder Include="Core\" />
     <Folder Include="DataAccess\Memory\" />
   </ItemGroup>
   <ItemGroup>

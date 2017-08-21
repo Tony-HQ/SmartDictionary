@@ -3,7 +3,6 @@
 using System;
 using System.Threading.Tasks;
 using SmartDictionary.Entity;
-using SQLite;
 
 namespace SmartDictionary.DataAccess.Persistence
 {

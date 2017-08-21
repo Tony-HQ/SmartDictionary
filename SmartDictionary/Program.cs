@@ -1,9 +1,6 @@
-﻿using SmartDictionary.DataAccess.Persistence;
-using SmartDictionary.Entity;
+﻿// Copyright © Qiang Huang, All rights reserved.
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SmartDictionary
@@ -11,25 +8,14 @@ namespace SmartDictionary
     internal static class Program
     {
         /// <summary>
-        /// The main entry point for the application.
+        ///     The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        private static void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Run().Wait();
             Application.Run(new Form1());
         }
-
-        public static async Task Run()
-        {
-            await DataSource.Init();
-            var dao = new SentenceDao();
-            await dao.SaveAsync(new Sentence { Key = "Qiang Huang", CreatedTime = DateTime.Now, LastUsedTime = DateTime.Now });
-            var saved = await dao.GetByKeyAsync("Qiang Huang");
-            Console.WriteLine(saved.Key);
-        }
-
     }
 }
