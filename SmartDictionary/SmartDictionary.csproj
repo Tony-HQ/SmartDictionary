@@ -78,6 +78,7 @@
   <ItemGroup>
     <Compile Include="Common\Configuration.cs" />
     <Compile Include="Common\Helper.cs" />
+    <Compile Include="Core\CoreService.cs" />
     <Compile Include="Core\ParticipleProcessor.cs" />
     <Compile Include="DataAccess\Persistence\CommonKeywordMappingDao.cs" />
     <Compile Include="DataAccess\Persistence\DataSource.cs" />

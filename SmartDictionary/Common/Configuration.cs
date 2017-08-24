@@ -16,5 +16,11 @@ namespace SmartDictionary.Common
             var debugEnable = ConfigurationManager.AppSettings.Get("DebugEnable") ?? "false";
             return bool.Parse(debugEnable);
         }
+
+        public static int GetKeywordMaxLength()
+        {
+            var length = ConfigurationManager.AppSettings.Get("KeywordMaxLength") ?? "3";
+            return int.Parse(length);
+        }
     }
 }

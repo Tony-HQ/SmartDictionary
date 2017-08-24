@@ -5,47 +5,47 @@ namespace SmartDictionary.Entity
     /// <summary>
     /// Keyword mapping table based on length of keyword.
     /// </summary>
-    public sealed class CommonMapping : KeywordMappingBase
+    public class CommonMapping : KeywordMappingBase
     {
     }
 
-    public sealed class OneTwoMapping : KeywordMappingBase
+    public sealed class OneTwoMapping : CommonMapping
     {
     }
 
-    public sealed class ThreeMapping : KeywordMappingBase
+    public sealed class ThreeMapping : CommonMapping
     {
     }
 
-    public sealed class FourMapping : KeywordMappingBase
+    public sealed class FourMapping : CommonMapping
     {
     }
 
-    public sealed class FiveMapping : KeywordMappingBase
+    public sealed class FiveMapping : CommonMapping
     {
     }
 
-    public sealed class SixMapping : KeywordMappingBase
+    public sealed class SixMapping : CommonMapping
     {
     }
 
-    public sealed class SevenMapping : KeywordMappingBase
+    public sealed class SevenMapping : CommonMapping
     {
     }
 
-    public sealed class EightMapping : KeywordMappingBase
+    public sealed class EightMapping : CommonMapping
     {
     }
 
-    public sealed class NineMapping : KeywordMappingBase
+    public sealed class NineMapping : CommonMapping
     {
     }
 
-    public sealed class TenMapping : KeywordMappingBase
+    public sealed class TenMapping : CommonMapping
     {
     }
 
-    public sealed class MoreThanTenMapping : KeywordMappingBase
+    public sealed class MoreThanTenMapping : CommonMapping
     {
     }
 }

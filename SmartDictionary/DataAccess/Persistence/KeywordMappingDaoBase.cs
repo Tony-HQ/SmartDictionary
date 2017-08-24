@@ -8,7 +8,7 @@ using SmartDictionary.Interface;
 
 namespace SmartDictionary.DataAccess.Persistence
 {
-    public abstract class KeywordMappingDao<T> : IKeywordMappingDao where T : KeywordMappingBase, new()
+    public abstract class KeywordMappingDao<T> : IKeywordMappingDao where T : CommonMapping, new()
     {
         public Task<int> DeleteById(long id)
         {
@@ -28,12 +28,33 @@ namespace SmartDictionary.DataAccess.Persistence
             return DataSource.GetConnection().InsertAllAsync(keywordMappings);
         }
 
-        public async Task<IEnumerable<CommonMapping>> SearchByKeywordsAsync(IEnumerable<string> keywords)
+        public async Task<IEnumerable<CommonMapping>> SearchByKeywordsAsync(IEnumerable<CommonMapping> keywords)
         {
-            var result = await DataSource.GetConnection().Table<T>()
-                .Where(_ => keywords.Contains(_.Key))
-                .ToListAsync();
-            return result.Select(i => new CommonMapping {Id = i.Id, Key = i.Key});
+            var enumerable = keywords as IList<CommonMapping> ?? keywords.ToList();
+            var result = await DataSource.GetConnection()
+                .QueryAsync<T>($"select * from {typeof(T).Name} where {SearchQueryMaker(enumerable)}");
+            return
+                result.Select(i => new CommonMapping { Id = i.Id, Key = i.Key });
+        }
+
+        private static string SearchQueryMaker(IEnumerable<CommonMapping> keywords)
+        {
+            var result = string.Empty;
+            var commonMappings = keywords as List<CommonMapping> ?? keywords.ToList();
+            for (var i = 0; i < commonMappings.Count(); i++)
+            {
+                result += OneCondition(commonMappings[i].Key, commonMappings[i].Count);
+                if (i != commonMappings.Count - 1)
+                {
+                    result += " or ";
+                }
+            }
+            return result;
+        }
+
+        private static string OneCondition(string key, int count)
+        {
+            return $"(key = \"{key}\" and count >= {count})";
         }
     }
 }

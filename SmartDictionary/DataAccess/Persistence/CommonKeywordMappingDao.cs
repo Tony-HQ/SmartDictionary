@@ -12,7 +12,7 @@ namespace SmartDictionary.DataAccess.Persistence
         public static async Task DeleteAsync(long id)
         {
             // 1,2 & >10
-            var tasks = new List<Task> {GetDeleteTask(id, 1), GetDeleteTask(id, 1000)};
+            var tasks = new List<Task> { GetDeleteTask(id, 1), GetDeleteTask(id, 1000) };
             // length in [3,10]
             From3To10.ForEach(
                 length =>
@@ -49,14 +49,14 @@ namespace SmartDictionary.DataAccess.Persistence
             await Task.WhenAll(tasks);
         }
 
-        public static async Task<IEnumerable<CommonMapping>[]> SearchKeywordMappingsAsync(IEnumerable<string> keywords)
+        public static async Task<IEnumerable<CommonMapping>[]> SearchKeywordMappingsAsync(IEnumerable<CommonMapping> keywords)
         {
-            var enumerable = keywords as string[] ?? keywords.ToArray();
+            var enumerable = keywords as CommonMapping[] ?? keywords.ToArray();
 
             var tasks = new List<Task<IEnumerable<CommonMapping>>>();
 
             // length == 1 || length == 2
-            var lessThanTwoWords = enumerable.Where(_ => _.Length < 2 && _.Length > 0).ToList();
+            var lessThanTwoWords = enumerable.Where(_ => _.Key.Length < 2 && _.Key.Length > 0).ToList();
             if (lessThanTwoWords.Any())
                 tasks.Add(GetSearchTask(lessThanTwoWords, 1));
 
@@ -64,14 +64,14 @@ namespace SmartDictionary.DataAccess.Persistence
             From3To10.ForEach(
                 length =>
                 {
-                    var toSearch = enumerable.Where(_ => _.Length == length).ToList();
+                    var toSearch = enumerable.Where(_ => _.Key.Length == length).ToList();
                     if (toSearch.Any())
                         tasks.Add(GetSearchTask(toSearch, length));
                 }
             );
 
             // length > 10
-            var moreThanTen = enumerable.Where(_ => _.Length > 10).ToList();
+            var moreThanTen = enumerable.Where(_ => _.Key.Length > 10).ToList();
             if (moreThanTen.Any())
                 tasks.Add(GetSearchTask(moreThanTen, 1000));
             return await Task.WhenAll(tasks);
@@ -88,15 +88,15 @@ namespace SmartDictionary.DataAccess.Persistence
                 .SaveMultipleAsync(toSave);
         }
 
-        private static Task<IEnumerable<CommonMapping>> GetSearchTask(IEnumerable<string> toSearch, int length)
+        private static Task<IEnumerable<CommonMapping>> GetSearchTask(IEnumerable<CommonMapping> toSearch, int length)
         {
-            var enumerable = toSearch as string[] ?? toSearch.ToArray();
+            var enumerable = toSearch as CommonMapping[] ?? toSearch.ToArray();
             return enumerable.Any()
                 ? KeywordMappingDaoFactory.GetKeywordMappingDao(length)
                     .SearchByKeywordsAsync(enumerable)
                 : null;
         }
 
-        private static readonly List<int> From3To10 = new List<int> {3, 4, 5, 6, 7, 8, 9, 10};
+        private static readonly List<int> From3To10 = new List<int> { 3, 4, 5, 6, 7, 8, 9, 10 };
     }
 }

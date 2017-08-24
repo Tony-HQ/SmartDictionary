@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataAccessTests.cs" />
+    <Compile Include="HelperTests.cs" />
     <Compile Include="ParticipleTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

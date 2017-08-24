@@ -14,6 +14,6 @@ namespace SmartDictionary.Interface
 
         Task<int> SaveMultipleAsync(IEnumerable<KeywordMappingBase> keywordMappings);
 
-        Task<IEnumerable<CommonMapping>> SearchByKeywordsAsync(IEnumerable<string> keywords);
+        Task<IEnumerable<CommonMapping>> SearchByKeywordsAsync(IEnumerable<CommonMapping> keywords);
     }
 }

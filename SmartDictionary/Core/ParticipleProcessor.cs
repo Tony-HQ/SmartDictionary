@@ -11,7 +11,7 @@ namespace SmartDictionary.Core
 {
     public class ParticipleProcessor
     {
-        public static IEnumerable<KeywordMappingBase> ParticipleSentence(string sentence, long id)
+        public static IEnumerable<KeywordMappingBase> ParticipleSentence(string sentence, long id, int level)
         {
             if (string.IsNullOrEmpty(sentence))
             {
@@ -22,39 +22,23 @@ namespace SmartDictionary.Core
             var oneChar = sentence.ToCharArray().Select(_ => _.ToString().ToLowerInvariant()).ToList();
 
             // one
-            var oneDist = GetDistinctCount(oneChar);
+            var oneDist = Helper.GetDistinctCount(oneChar);
             oneDist.ToList().ForEach(pair => holder.Add(Helper.GetKeywordMappingInstance(pair.Key, id, pair.Value)));
 
-            // two
-            if (oneChar.Count == 1) return holder;
-            var twoChars = CombineCharsToWords(oneChar, 2);
-            var twoDist = GetDistinctCount(twoChars);
-            twoDist.ToList().ForEach(pair => holder.Add(Helper.GetKeywordMappingInstance(pair.Key, id, pair.Value)));
-
-            // three
-            if (oneChar.Count == 2) return holder;
-            var threeChars = CombineCharsToWords(oneChar, 3);
-            var threeDist = GetDistinctCount(threeChars);
-            threeDist.ToList().ForEach(pair => holder.Add(Helper.GetKeywordMappingInstance(pair.Key, id, pair.Value)));
-
+            for (var i = 2; i <= level; i++)
+            {
+                CombineAndAddToHolder(oneChar, id, i, ref holder);
+            }
             return holder;
         }
 
-        private static IReadOnlyDictionary<string, int> GetDistinctCount(IEnumerable<string> dumplicatedWords)
+        private static void CombineAndAddToHolder(IEnumerable<string> oneChar, long id, int level, ref List<KeywordMappingBase> holder)
         {
-            var workingDict = new Dictionary<string, int>();
-            foreach (var word in dumplicatedWords)
-            {
-                if (workingDict.ContainsKey(word))
-                {
-                    workingDict[word] += 1;
-                }
-                else
-                {
-                    workingDict.Add(word, 1);
-                }
-            }
-            return workingDict;
+            var enumerable = oneChar as IList<string> ?? oneChar.ToList();
+            if (enumerable.Count < level) return;
+            var chars = CombineCharsToWords(enumerable, level);
+            var dist = Helper.GetDistinctCount(chars);
+            holder.AddRange(dist.Select(pair => Helper.GetKeywordMappingInstance(pair.Key, id, pair.Value)));
         }
 
         private static IEnumerable<string> CombineCharsToWords(IEnumerable<string> chars, int number)

@@ -29,13 +29,30 @@ namespace SmartDiction.UnitTests
                 Helper.GetKeywordMappingInstance(Tommorow, 2,1)
             });
 
-            var result = await CommonKeywordMappingDao.SearchKeywordMappingsAsync(new List<string> { Today });
-            Assert.AreEqual(result.Length, 1);
+            var result = await CommonKeywordMappingDao.SearchKeywordMappingsAsync(new List<CommonMapping> { new CommonMapping { Count = 1, Key = Today }, new CommonMapping { Count = 1, Key = Tommorow } });
+            Assert.AreEqual(result.Length, 2);
             var mapping = result.FirstOrDefault();
             Assert.IsNotNull(mapping);
             var commonMappings = mapping as IList<CommonMapping> ?? mapping.ToList();
             Assert.AreEqual(1, commonMappings.Count);
             Assert.AreEqual(1, commonMappings.FirstOrDefault()?.Id);
+        }
+
+        [TestMethod]
+        public async Task TestKeywordMappingCountSmallThan()
+        {
+            await CommonKeywordMappingDao.SaveAsync(new List<KeywordMappingBase>
+            {
+                Helper.GetKeywordMappingInstance(Today, 1,1),
+                Helper.GetKeywordMappingInstance(Tommorow, 2,1)
+            });
+
+            var result = await CommonKeywordMappingDao.SearchKeywordMappingsAsync(new List<CommonMapping> { new CommonMapping { Count = 2, Key = Today }, new CommonMapping { Count = 1, Key = Tommorow } });
+            Assert.AreEqual(2, result.Length);
+            var mapping = result.FirstOrDefault(i => !i.Any());
+            Assert.IsNotNull(mapping);
+            var commonMappings = mapping as IList<CommonMapping> ?? mapping.ToList();
+            Assert.AreEqual(0, commonMappings.Count);
         }
 
         private const string Today = "today";

@@ -1,5 +1,7 @@
 ﻿// Copyright © Qiang Huang, All rights reserved.
 
+using System.Collections.Generic;
+using System.Linq;
 using SmartDictionary.Entity;
 
 namespace SmartDictionary.Common
@@ -22,6 +24,35 @@ namespace SmartDictionary.Common
                 case 10: return new TenMapping { Key = key, Id = id, Count = count };
                 default: return new MoreThanTenMapping { Key = key, Id = id, Count = count };
             }
+        }
+
+        public static IDictionary<string, int> GetDistinctCount(IEnumerable<string> dumplicatedWords)
+        {
+            var workingDict = new Dictionary<string, int>();
+            foreach (var word in dumplicatedWords)
+            {
+                if (workingDict.ContainsKey(word))
+                {
+                    workingDict[word] += 1;
+                }
+                else
+                {
+                    workingDict.Add(word, 1);
+                }
+            }
+            return workingDict;
+        }
+
+        public static IEnumerable<string> BreakLongWordsToShort(string word, int level)
+        {
+            var result = new List<string>();
+            var count = word.Length / level;
+            for (var i = 0; i < count; i++)
+            {
+                result.Add(word.Substring(i, level));
+            }
+            result.Add(word.Substring(word.Length - level, level));
+            return result.Distinct();
         }
     }
 }
