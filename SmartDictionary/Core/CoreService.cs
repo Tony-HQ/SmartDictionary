@@ -12,23 +12,29 @@ namespace SmartDictionary.Core
 {
     public sealed class CoreService
     {
-        public static async Task SaveSentence(string sentence)
+        public static async Task SaveSentence(string sentence, int level)
         {
-            var sentenceId = await SentenceDao.SaveAsync(
+            var saved = await SentenceDao.GetByKeyAsync(sentence);
+            if (saved != null)
+            {
+                await SentenceDao.DeleteAsync(saved.Id);
+                await CommonKeywordMappingDao.DeleteAsync(saved.Id);
+            }
+            await SentenceDao.SaveAsync(
                 new Sentence
                 {
                     CreatedTime = DateTime.Now,
                     Key = sentence,
                     LastUsedTime = DateTime.Now
                 });
-
-            var toSaves = ParticipleProcessor.ParticipleSentence(sentence, sentenceId, 3);
+            var savedSentence = await SentenceDao.GetByKeyAsync(sentence);
+            var toSaves = ParticipleProcessor.ParticipleSentence(sentence, savedSentence.Id, level);
             await CommonKeywordMappingDao.SaveAsync(toSaves);
         }
 
         public static async Task<IEnumerable<Sentence>> SearchBySentence(string sentence, int level)
         {
-            var dictionary = Helper.GetDistinctCount(sentence.Split(' '));
+            var dictionary = Helper.GetDistinctCount(sentence.ToLowerInvariant().Split(' '));
             // remove longer keyword
             PreProcessOnDictionary(ref dictionary, level);
             var searchMappings = dictionary.Select(pair => new CommonMapping

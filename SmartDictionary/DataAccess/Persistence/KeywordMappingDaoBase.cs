@@ -12,10 +12,7 @@ namespace SmartDictionary.DataAccess.Persistence
     {
         public Task<int> DeleteById(long id)
         {
-            return DataSource.GetConnection().DeleteAsync(new T
-            {
-                Id = id
-            });
+            return DataSource.GetConnection().ExecuteAsync($"delete from {typeof(T).Name} where id = {id}");
         }
 
         public Task<int> SaveAsync(KeywordMappingBase keywordMapping)
@@ -37,6 +34,11 @@ namespace SmartDictionary.DataAccess.Persistence
                 result.Select(i => new CommonMapping { Id = i.Id, Key = i.Key });
         }
 
+        private static string OneCondition(string key, int count)
+        {
+            return $"(key = \"{key}\" and count >= {count})";
+        }
+
         private static string SearchQueryMaker(IEnumerable<CommonMapping> keywords)
         {
             var result = string.Empty;
@@ -50,11 +52,6 @@ namespace SmartDictionary.DataAccess.Persistence
                 }
             }
             return result;
-        }
-
-        private static string OneCondition(string key, int count)
-        {
-            return $"(key = \"{key}\" and count >= {count})";
         }
     }
 }

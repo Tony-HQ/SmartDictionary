@@ -12,7 +12,7 @@ namespace SmartDictionary.DataAccess.Persistence
         public static async Task DeleteAsync(long id)
         {
             // 1,2 & >10
-            var tasks = new List<Task> { GetDeleteTask(id, 1), GetDeleteTask(id, 1000) };
+            var tasks = new List<Task> {GetDeleteTask(id, 1), GetDeleteTask(id, 1000)};
             // length in [3,10]
             From3To10.ForEach(
                 length =>
@@ -49,7 +49,8 @@ namespace SmartDictionary.DataAccess.Persistence
             await Task.WhenAll(tasks);
         }
 
-        public static async Task<IEnumerable<CommonMapping>[]> SearchKeywordMappingsAsync(IEnumerable<CommonMapping> keywords)
+        public static async Task<IEnumerable<CommonMapping>[]> SearchKeywordMappingsAsync(
+            IEnumerable<CommonMapping> keywords)
         {
             var enumerable = keywords as CommonMapping[] ?? keywords.ToArray();
 
@@ -97,6 +98,6 @@ namespace SmartDictionary.DataAccess.Persistence
                 : null;
         }
 
-        private static readonly List<int> From3To10 = new List<int> { 3, 4, 5, 6, 7, 8, 9, 10 };
+        private static readonly List<int> From3To10 = new List<int> {3, 4, 5, 6, 7, 8, 9, 10};
     }
 }

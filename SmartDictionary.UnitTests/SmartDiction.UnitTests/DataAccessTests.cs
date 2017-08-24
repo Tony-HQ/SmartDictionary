@@ -21,6 +21,26 @@ namespace SmartDiction.UnitTests
         }
 
         [TestMethod]
+        public async Task TestKeywordMappingDelete()
+        {
+            await CommonKeywordMappingDao.SaveAsync(new List<KeywordMappingBase>
+            {
+                Helper.GetKeywordMappingInstance(Today, 1,1),
+                Helper.GetKeywordMappingInstance(Tommorow, 2,1)
+            });
+
+            var result = await CommonKeywordMappingDao.SearchKeywordMappingsAsync(new List<CommonMapping> { new CommonMapping { Count = 1, Key = Today }, new CommonMapping { Count = 1, Key = Tommorow } });
+            Assert.AreEqual(result.Length, 2);
+
+            await CommonKeywordMappingDao.DeleteAsync(1);
+            await CommonKeywordMappingDao.DeleteAsync(2);
+
+            var result2 = await CommonKeywordMappingDao.SearchKeywordMappingsAsync(new List<CommonMapping> { new CommonMapping { Count = 1, Key = Today }, new CommonMapping { Count = 1, Key = Tommorow } });
+            Assert.AreEqual(result.Length, 2);
+            Assert.AreEqual(true, result2.All(i => !i.Any()));
+        }
+
+        [TestMethod]
         public async Task TestKeywordMapping()
         {
             await CommonKeywordMappingDao.SaveAsync(new List<KeywordMappingBase>

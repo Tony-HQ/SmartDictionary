@@ -27,7 +27,7 @@ namespace SmartDictionary.DataAccess.Persistence
         public static Task<Sentence> GetByKeyAsync(string key)
         {
             var query = DataSource.GetConnection().Table<Sentence>().Where(sentence => sentence.Key.Equals(key));
-            return query.FirstAsync();
+            return query.FirstOrDefaultAsync();
         }
 
         public static Task<int> SaveAsync(Sentence sentence)

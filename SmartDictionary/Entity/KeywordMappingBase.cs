@@ -17,6 +17,7 @@ namespace SmartDictionary.Entity
         /// <summary>
         /// Sentence id.
         /// </summary>
+        [Indexed]
         public long Id { get; set; }
 
         /// <summary>
