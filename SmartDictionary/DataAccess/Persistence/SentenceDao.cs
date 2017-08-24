@@ -18,15 +18,16 @@ namespace SmartDictionary.DataAccess.Persistence
             });
         }
 
+        public static Task<List<Sentence>> GetByIdsAsync(IEnumerable<long> ids)
+        {
+            return DataSource.GetConnection().Table<Sentence>().Where(sentence => ids.Contains(sentence.Id))
+                .ToListAsync();
+        }
+
         public static Task<Sentence> GetByKeyAsync(string key)
         {
             var query = DataSource.GetConnection().Table<Sentence>().Where(sentence => sentence.Key.Equals(key));
             return query.FirstAsync();
-        }
-
-        public static Task<List<Sentence>> GetByIdsAsync(IEnumerable<long> ids)
-        {
-            return DataSource.GetConnection().Table<Sentence>().Where(sentence => ids.Contains(sentence.Id)).ToListAsync();
         }
 
         public static Task<int> SaveAsync(Sentence sentence)

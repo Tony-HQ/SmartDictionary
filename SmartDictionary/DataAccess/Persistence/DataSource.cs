@@ -61,6 +61,7 @@ namespace SmartDictionary.DataAccess.Persistence
             await Task.WhenAll(tasks);
         }
 
-        private static readonly string Path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), Configuration.DatabaseName());
+        private static readonly string Path =
+            System.IO.Path.Combine(System.IO.Path.GetTempPath(), Configuration.DatabaseName());
     }
 }

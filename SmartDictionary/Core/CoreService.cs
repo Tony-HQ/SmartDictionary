@@ -1,7 +1,8 @@
-﻿using System;
+﻿// Copyright © Qiang Huang, All rights reserved.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using SmartDictionary.Common;
 using SmartDictionary.DataAccess.Persistence;
@@ -56,7 +57,7 @@ namespace SmartDictionary.Core
             });
 
             var sentences = await SentenceDao.GetByIdsAsync(secondFilter);
-            
+
             // sentence need to contain all longer keywords.
             var longerKeywords = dictionary.Where(pair => pair.Key.Length > level).ToList();
             return sentences.Where(s =>

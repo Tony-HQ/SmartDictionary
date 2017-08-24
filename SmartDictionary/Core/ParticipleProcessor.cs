@@ -15,7 +15,9 @@ namespace SmartDictionary.Core
         {
             if (string.IsNullOrEmpty(sentence))
             {
-                throw new ArgumentException(string.Format(Resources.ParticipleProcessor_ParticipleSentence__0__is_empty_or_null, nameof(sentence)), nameof(sentence));
+                throw new ArgumentException(
+                    string.Format(Resources.ParticipleProcessor_ParticipleSentence__0__is_empty_or_null,
+                        nameof(sentence)), nameof(sentence));
             }
 
             var holder = new List<KeywordMappingBase>();
@@ -32,7 +34,8 @@ namespace SmartDictionary.Core
             return holder;
         }
 
-        private static void CombineAndAddToHolder(IEnumerable<string> oneChar, long id, int level, ref List<KeywordMappingBase> holder)
+        private static void CombineAndAddToHolder(IEnumerable<string> oneChar, long id, int level,
+            ref List<KeywordMappingBase> holder)
         {
             var enumerable = oneChar as IList<string> ?? oneChar.ToList();
             if (enumerable.Count < level) return;
