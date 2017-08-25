@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// Copyright © Qiang Huang, All rights reserved.
+
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SmartDictionary.Common;
 
@@ -11,7 +9,6 @@ namespace SmartDiction.UnitTests
     [TestClass]
     public sealed class HelperTests
     {
-
         [TestMethod]
         public void TestWordBreker()
         {

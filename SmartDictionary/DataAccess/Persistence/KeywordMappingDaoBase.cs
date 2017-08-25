@@ -31,7 +31,7 @@ namespace SmartDictionary.DataAccess.Persistence
             var result = await DataSource.GetConnection()
                 .QueryAsync<T>($"select * from {typeof(T).Name} where {SearchQueryMaker(enumerable)}");
             return
-                result.Select(i => new CommonMapping { Id = i.Id, Key = i.Key });
+                result.Select(i => new CommonMapping {Id = i.Id, Key = i.Key});
         }
 
         private static string OneCondition(string key, int count)
