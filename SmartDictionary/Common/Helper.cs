@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms;
 using SmartDictionary.Entity;
 
 namespace SmartDictionary.Common
@@ -18,6 +19,18 @@ namespace SmartDictionary.Common
             }
             result.Add(word.Substring(word.Length - level, level));
             return result.Distinct();
+        }
+
+        public static ListViewItem[] ConvertSentenceToListViewItem(IEnumerable<Sentence> sentences)
+        {
+            return sentences.Select(_ =>
+                {
+                    var item = new ListViewItem(_.Id.ToString());
+                    item.SubItems.Add(_.Key);
+                    item.SubItems.Add(_.LastUsedTime.ToLocalTime().ToString());
+                    return item;
+                }
+            ).ToArray();
         }
 
         public static IDictionary<string, int> GetDistinctCount(IEnumerable<string> dumplicatedWords)

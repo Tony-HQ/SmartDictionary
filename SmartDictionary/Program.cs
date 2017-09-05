@@ -2,6 +2,7 @@
 
 using System;
 using System.Windows.Forms;
+using SmartDictionary.DataAccess.Persistence;
 
 namespace SmartDictionary
 {
@@ -15,6 +16,7 @@ namespace SmartDictionary
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            DataSource.Init().Wait();
             Application.Run(new Form1());
         }
     }

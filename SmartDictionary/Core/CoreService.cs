@@ -14,6 +14,10 @@ namespace SmartDictionary.Core
     {
         public static async Task SaveSentence(string sentence, int level)
         {
+            if (sentence.Length <= 2)
+            {
+                return;
+            }
             var saved = await SentenceDao.GetByKeyAsync(sentence);
             if (saved != null)
             {
@@ -34,7 +38,7 @@ namespace SmartDictionary.Core
 
         public static async Task<IEnumerable<Sentence>> SearchBySentence(string sentence, int level)
         {
-            var dictionary = Helper.GetDistinctCount(sentence.ToLowerInvariant().Split(' '));
+            var dictionary = Helper.GetDistinctCount(sentence.Trim().ToLowerInvariant().Split(' '));
             // remove longer keyword
             PreProcessOnDictionary(ref dictionary, level);
             var searchMappings = dictionary.Select(pair => new CommonMapping

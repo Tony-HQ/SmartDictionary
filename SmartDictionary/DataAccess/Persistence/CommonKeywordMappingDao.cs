@@ -28,7 +28,7 @@ namespace SmartDictionary.DataAccess.Persistence
             var tasks = new List<Task<int>>();
 
             // length == 1 || length == 2
-            var lessThanTwoWords = enumerable.Where(_ => _.Key.Length < 2 && _.Key.Length > 0).ToList();
+            var lessThanTwoWords = enumerable.Where(_ => _.Key.Length <= 2 && _.Key.Length > 0).ToList();
             if (lessThanTwoWords.Any())
                 tasks.Add(GetSaveTask(lessThanTwoWords, 1));
 
@@ -57,7 +57,7 @@ namespace SmartDictionary.DataAccess.Persistence
             var tasks = new List<Task<IEnumerable<CommonMapping>>>();
 
             // length == 1 || length == 2
-            var lessThanTwoWords = enumerable.Where(_ => _.Key.Length < 2 && _.Key.Length > 0).ToList();
+            var lessThanTwoWords = enumerable.Where(_ => _.Key.Length <= 2 && _.Key.Length > 0).ToList();
             if (lessThanTwoWords.Any())
                 tasks.Add(GetSearchTask(lessThanTwoWords, 1));
 
