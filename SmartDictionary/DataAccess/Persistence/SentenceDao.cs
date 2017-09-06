@@ -24,6 +24,11 @@ namespace SmartDictionary.DataAccess.Persistence
                 .ToListAsync();
         }
 
+        public static Task<List<Sentence>> GetAllAsync()
+        {
+            return DataSource.GetConnection().Table<Sentence>().ToListAsync();
+        }
+
         public static Task<Sentence> GetByKeyAsync(string key)
         {
             var query = DataSource.GetConnection().Table<Sentence>().Where(sentence => sentence.Key.Equals(key));

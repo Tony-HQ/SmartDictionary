@@ -81,6 +81,11 @@ namespace SmartDictionary.Core
             });
         }
 
+        public static async Task<IEnumerable<Sentence>> GetAllSentence()
+        {
+            return await SentenceDao.GetAllAsync();
+        }
+
         private static void PreProcessOnDictionary(ref IDictionary<string, int> dictionary, int level)
         {
             var longerKeywords = dictionary.Where(pair => pair.Key.Length > level).ToList();
