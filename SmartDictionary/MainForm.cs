@@ -1,6 +1,5 @@
 ﻿// Copyright © Qiang Huang, All rights reserved.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
@@ -8,25 +7,45 @@ using Shortcut;
 using SmartDictionary.Common;
 using SmartDictionary.Const;
 using SmartDictionary.Core;
+using SmartDictionary.DataAccess.Persistence;
 using SmartDictionary.Entity;
 
 namespace SmartDictionary
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
             InitEventHandler();
             BindKeywords();
         }
 
-        private void BindKeywords()
+        public void BindKeywords()
         {
-            _hotkeyBinder.Bind(Modifiers.Control | Modifiers.Alt, Keys.C).To(HotkeyCallback);
-            _hotkeyBinder.Bind(Modifiers.Alt, Keys.C).To(ToggleTheWindow);
-            _hotkeyBinder.Bind(Modifiers.None, Keys.Down).To(FoucsToListViewAndDown);
-            _hotkeyBinder.Bind(Modifiers.None, Keys.Up).To(FoucsToListViewAndUp);
+            var toggleModifier1 = Helper.ParseModifier(IniFile.IniReadValue(Consts.ToggleHotkeySectionName,
+                Consts.ModifierKeyName));
+            var toggleKey = Helper.ParseKey(IniFile.IniReadValue(Consts.ToggleHotkeySectionName,
+                Consts.KeyKeyName));
+
+            var saveModifier1 = Helper.ParseModifier(IniFile.IniReadValue(Consts.SaveHotkeySectionName,
+                Consts.ModifierKeyName));
+            var saveKey = Helper.ParseKey(IniFile.IniReadValue(Consts.SaveHotkeySectionName,
+                Consts.KeyKeyName));
+
+            if (saveModifier1 != Modifiers.None && saveKey != Keys.None)
+            {
+                SaveHotKey = new Hotkey(saveModifier1, saveKey);
+                HotkeyBinder.Bind(SaveHotKey).To(HotkeyCallback);
+            }
+            if (toggleModifier1 != Modifiers.None && toggleKey != Keys.None)
+            {
+                ToggleHotKey = new Hotkey(toggleModifier1, toggleKey);
+                HotkeyBinder.Bind(ToggleHotKey).To(ToggleTheWindow);
+            }
+
+            HotkeyBinder.Bind(Modifiers.None, Keys.Down).To(FoucsToListViewAndDown);
+            HotkeyBinder.Bind(Modifiers.None, Keys.Up).To(FoucsToListViewAndUp);
         }
 
         private async void HotkeyCallback()
@@ -67,7 +86,6 @@ namespace SmartDictionary
                     sentences = await CoreService.GetAllSentence();
                 }
                 var sentenceList = sentences as IList<Sentence> ?? sentences.ToList();
-                _sentenceCount = sentenceList.Count;
 
                 MainListView.BeginUpdate();
                 MainListView.Items.Clear();
@@ -151,9 +169,10 @@ namespace SmartDictionary
             }
         }
 
-        private static int _sentenceCount = 0;
         private static int _listViewSelectedRowOffset = 0;
         private static bool _listViewFoucsed;
-        private readonly HotkeyBinder _hotkeyBinder = new HotkeyBinder();
+        public HotkeyBinder HotkeyBinder = new HotkeyBinder();
+        public Hotkey ToggleHotKey;
+        public Hotkey SaveHotKey;
     }
 }

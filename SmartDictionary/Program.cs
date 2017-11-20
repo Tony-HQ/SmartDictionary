@@ -1,6 +1,8 @@
 ﻿// Copyright © Qiang Huang, All rights reserved.
 
 using System;
+using System.IO;
+using System.Reflection;
 using System.Windows.Forms;
 using SmartDictionary.DataAccess.Persistence;
 
@@ -17,7 +19,10 @@ namespace SmartDictionary
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             DataSource.Init().Wait();
-            Application.Run(new Form1());
+            var path = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "preferences.ini");
+            IniFile.SetPath(path);
+            IniFile.CreateIfNotExist();
+            Application.Run(new MainForm());
         }
     }
 }

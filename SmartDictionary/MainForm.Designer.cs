@@ -2,7 +2,7 @@
 
 namespace SmartDictionary
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -88,6 +88,17 @@ namespace SmartDictionary
             this.PreferencesMenuItem.Name = "PreferencesMenuItem";
             this.PreferencesMenuItem.Size = new System.Drawing.Size(135, 22);
             this.PreferencesMenuItem.Text = "Preferences";
+            this.PreferencesMenuItem.Click += (sender, e) =>
+            {
+                using (var preferencesFrom = new PreferencesForm
+                {
+                    Owner = this
+                })
+                {
+                    preferencesFrom.ShowDialog();
+                    preferencesFrom.Dispose();
+                }
+            };
 
             // ExitMenuItem
             this.ExitMenuItem.Name = "ExitMenuItem";
@@ -124,18 +135,18 @@ namespace SmartDictionary
             // SentenceId
             this.SentenceId.Name = "SentenceId";
             this.SentenceId.Text = "Id";
-            this.SentenceId.Width = 80;
+            this.SentenceId.Width = 70;
             this.SentenceId.TextAlign = HorizontalAlignment.Center;
 
             // SentenceKey
             this.SentenceKey.Name = "SentenceKey";
             this.SentenceKey.Text = "Value";
-            this.SentenceKey.Width = 1000;
+            this.SentenceKey.Width = 990;
 
             // LastUsedTime
             this.LastUsedTime.Name = "LastUsedTime";
             this.LastUsedTime.Text = "LastUsedTime";
-            this.LastUsedTime.Width = 120;
+            this.LastUsedTime.Width = 140;
             this.LastUsedTime.TextAlign = HorizontalAlignment.Center;
 
             // MainListView
